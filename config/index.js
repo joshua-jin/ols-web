@@ -28,6 +28,12 @@ module.exports = {
     // in the browser.
     showEslintErrorsInOverlay: false,
 
+    proxyTable: {
+      '/api': {
+        target: 'http://10.204.22.192:8081',
+        pathRewrite: {"^/api" : "/api"}
+      }
+    },
     /**
      * Source Maps
      */
@@ -66,7 +72,6 @@ module.exports = {
     // npm install --save-dev compression-webpack-plugin
     productionGzip: false,
     productionGzipExtensions: ['js', 'css'],
-
     // Run the build command with an extra argument to
     // View the bundle analyzer report after build finishes:
     // `npm run build --report`

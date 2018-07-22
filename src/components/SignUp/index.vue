@@ -4,17 +4,14 @@
       <el-col :span="24">
         <router-link to="/"><i class="el-icon-arrow-left m-btn-back"></i></router-link>
         <div class="m-form-wrapper">
-          <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
-            <el-form-item prop="userName">
-              <label for="userName">新用户账号</label>
-              <el-input class="m-input-full-width m-input" v-model="ruleForm.userName"></el-input>
+          <el-form :model="ruleForm" :rules="rules" :label-position="'top'"  ref="ruleForm">
+            <el-form-item prop="username" label="新用户账号" >
+              <el-input class="m-input-full-width m-input" v-model="ruleForm.username"></el-input>
             </el-form-item>
-            <el-form-item prop="password">
-              <label for="password">密码</label>
+            <el-form-item prop="password" label="密码">
               <el-input class="m-input-full-width m-input" type="password" v-model="ruleForm.password"></el-input>
             </el-form-item>
-            <el-form-item prop="password2">
-              <label for="password2">确认密码</label>
+            <el-form-item prop="password2" label="确认密码">
               <el-input class="m-input-full-width m-input" type="password" v-model="ruleForm.password2"></el-input>
             </el-form-item>
             <el-form-item class="m-center m-btn-wrapper">
@@ -41,15 +38,42 @@
         }
       }
 
+
+        const checkIfUserExsit = (rule, value, callback) => {
+          if (value !== this.ruleForm.password) {
+
+          } else {
+            callback()
+          }
+
+          if(value){
+            const {username} = value
+            api.checkIfUserExsit({username}).then(function (response) {
+              if(response==400){
+                callback(new Error('Retyped password is different'))
+              }else{
+                callback()
+              }
+            })
+            .catch(function (error) {
+              // todo
+              console.log(error);
+
+            });
+          }
+
+        }
       return {
         ruleForm: {
-          userName: '',
+          username: '',
           password: '',
           password2: '',
         },
         rules: {
-          userName: [
+          username: [
             {required: true, message: '请输入用户名', trigger: 'blur'},
+            {validator: checkIfUserExsit, message: '用户名已存在', trigger: ['blur']},
+
           ],
           password: [
             {required: true, message: '请输入密码', trigger: 'blur'},
@@ -67,9 +91,27 @@
           if (!flag) {
             return
           }
-          api.login()
+          api.register(this.ruleForm).then( (response)=> {
+            // handle success
+            console.log(response);
+            this.$message({
+               message: '恭喜你，注册成功！',
+               type: 'success'
+             });
+            this.$router.push('/')
+          })
+          .catch((error)=>{
+            // handle error
+            console.log(error);
+            this.$message({
+               message: '注册失败！错误信息：'+error.message,
+               type: 'error'
+             });
+
+          });
         })
       }
+
     }
   }
 </script>
