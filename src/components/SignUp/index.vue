@@ -5,13 +5,13 @@
         <router-link to="/"><i class="el-icon-arrow-left m-btn-back"></i></router-link>
         <div class="m-form-wrapper">
           <el-form :model="ruleForm" :rules="rules" :label-position="'top'"  ref="ruleForm">
-            <el-form-item prop="username" label="新用户账号" >
+            <el-form-item maxlength="50" minlength="3" prop="username" label="新用户账号" >
               <el-input class="m-input-full-width m-input" v-model="ruleForm.username"></el-input>
             </el-form-item>
-            <el-form-item prop="password" label="密码">
+            <el-form-item maxlength="30" minlength="3" prop="password" label="密码">
               <el-input class="m-input-full-width m-input" type="password" v-model="ruleForm.password"></el-input>
             </el-form-item>
-            <el-form-item prop="password2" label="确认密码">
+            <el-form-item maxlength="30" minlength="3" prop="password2" label="确认密码">
               <el-input class="m-input-full-width m-input" type="password" v-model="ruleForm.password2"></el-input>
             </el-form-item>
             <el-form-item class="m-center m-btn-wrapper">
@@ -40,17 +40,11 @@
 
 
         const checkIfUserExsit = (rule, value, callback) => {
-          if (value !== this.ruleForm.password) {
-
-          } else {
-            callback()
-          }
-
           if(value){
-            const {username} = value
-            api.checkIfUserExsit({username}).then(function (response) {
-              if(response==400){
-                callback(new Error('Retyped password is different'))
+            api.checkIfUserExsit({name:value}).then(function (response) {
+              console.log(response);
+              if(response.data===400){
+                callback(new Error('用户名已存在！'))
               }else{
                 callback()
               }
