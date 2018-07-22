@@ -3,6 +3,10 @@
     <div class="m-flexitem">
       <el-col :span="24">
         <div class="m-form-wrapper">
+          <div class="header">
+            <span class="header-company">思沃学院</span>
+            <span class="header-title">在线学习系统</span>
+          </div>
           <el-form :model="ruleForm" label-position="top" ref="ruleForm">
             <el-form-item prop="userName" label="账号">
               <el-input class="m-input-full-width m-input" v-model="ruleForm.userName"></el-input>
@@ -53,3 +57,30 @@
     }
   }
 </script>
+
+<style>
+  .header-company {
+    width: 112px;
+    height: 28px;
+    font-size: 28px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    color: #00acac;
+    margin-bottom: 51px;
+  }
+  .header-title {
+    width: 108px;
+    height: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.11;
+    letter-spacing: normal;
+    color: #999999;
+    margin-bottom: 51px;
+  }
+</style>
