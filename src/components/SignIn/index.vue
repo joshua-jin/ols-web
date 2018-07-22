@@ -8,8 +8,8 @@
             <span class="header-title">在线学习系统</span>
           </div>
           <el-form :model="ruleForm" label-position="top" ref="ruleForm">
-            <el-form-item prop="userName" label="账号">
-              <el-input class="m-input-full-width m-input" v-model="ruleForm.userName"></el-input>
+            <el-form-item prop="username" label="账号">
+              <el-input class="m-input-full-width m-input" v-model="ruleForm.username"></el-input>
             </el-form-item>
             <el-form-item prop="password" label="密码">
               <el-input class="m-input-full-width m-input" type="password" v-model="ruleForm.password"></el-input>
@@ -34,7 +34,7 @@
     data() {
       return {
         ruleForm: {
-          userName: '',
+          username: '',
           password: '',
         },
         loginError: false
