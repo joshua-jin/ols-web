@@ -1,9 +1,7 @@
-import http from 'http'
-
-const API_BASE = '/api'
+import http from 'axios'
 
 export default {
-  login () {
-    return http.post(`${API_BASE}/login`)
+  login (data) {
+    return http.post(`/login`, data)
   }
 }

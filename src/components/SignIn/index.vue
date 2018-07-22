@@ -1,65 +1,54 @@
 <template>
-  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px">
-    <el-form-item label="用户名：" prop="userName">
-      <el-col :span="12">
-        <el-input v-model="ruleForm.userName"></el-input>
+  <div class="m-flexbox">
+    <div class="m-flexitem">
+      <el-col :span="24">
+        <div class="m-form-wrapper">
+          <el-form :model="ruleForm" ref="ruleForm">
+            <el-form-item prop="userName" label="账号">
+              <el-input class="m-input-full-width m-input" v-model="ruleForm.userName"></el-input>
+            </el-form-item>
+            <el-form-item prop="password" label="密码">
+              <el-input class="m-input-full-width m-input" type="password" v-model="ruleForm.password"></el-input>
+            </el-form-item>
+            <el-form-item v-if="loginError" :show-message="true" error="Username or password is invalid!" style="text-align: center" inline-message>
+            </el-form-item>
+            <el-form-item class="m-center m-btn-wrapper">
+              <el-button class="m-btn" type="primary" @click="submitForm('ruleForm')">登陆</el-button>
+              <router-link style="display: block" to="/signup">新用户注册</router-link>
+            </el-form-item>
+          </el-form>
+        </div>
       </el-col>
-    </el-form-item>
-    <el-form-item label="密码：" prop="password">
-      <el-col :span="12">
-        <el-input type="password" v-model="ruleForm.password"></el-input>
-      </el-col>
-    </el-form-item>
-    <el-form-item label="验证码：" prop="capture">
-      <el-col :span="12">
-        <el-input v-model="ruleForm.capture"></el-input>
-      </el-col>
-      <el-col :span="6">
-        <el-button>刷新</el-button>
-      </el-col>
-    </el-form-item>
-    <el-form-item>
-      <el-col :span="1">
-        <el-button type="primary">登陆</el-button>
-      </el-col>
-    </el-form-item>
-    <el-form-item>
-      <el-col :span="1">
-        <router-link to="/signup">注册</router-link>
-        <el-button type="primary" @click="submitForm('ruleForm')">登陆</el-button>
-      </el-col>
-    </el-form-item>
-  </el-form>
+    </div>
+  </div>
 </template>
 
 <script>
   import api from '@/api'
-
+  import './index.css'
   export default {
     data() {
       return {
         ruleForm: {
           userName: '',
           password: '',
-          capture: '',
         },
-        rules: {
-          userName: [
-            {required: true, message: '请输入用户名', trigger: 'blur'},
-            {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change']}
-          ],
-          password: [
-            {required: true, message: '请输入密码', trigger: 'blur'}
-          ],
-          capture: [
-            {required: true, message: '请输入验证码', trigger: 'blur'}
-          ]
-        }
+        loginError: false
       }
     },
     methods: {
-      submitForm(formName) {
-        api.login();
+      async submitForm(formName) {
+        this.loginError = false;
+        try {
+          const resp = await api.login(this.ruleForm);
+          if (resp.config.validateStatus(resp.status)) {
+            alert("Login successful!");
+            return;
+          }
+          this.loginError = true;
+        }catch (e) {
+          this.loginError = true;
+        }
       }
     }
   }
