@@ -26,9 +26,9 @@
 
 <script>
   import api from '@/api'
-  import css from '../SignIn/index.css';
 
   export default {
+    name: 'SignUp',
     data() {
       const validateRetypePasswordSame = (rule, value, callback) => {
         if (value !== this.ruleForm.password) {
@@ -65,16 +65,15 @@
         },
         rules: {
           username: [
-            {required: true, message: '请输入用户名', trigger: 'blur'},
-            {validator: checkIfUserExsit, message: '用户名已存在', trigger: ['blur']},
-
+            {required: true, message: '请输入用户名', trigger: 'blur', ruleId: 'usernameNonEmpty'},
+            {validator: checkIfUserExsit, message: '用户名已存在', trigger: 'blur', ruleId: 'userNameNoDup'},
           ],
           password: [
-            {required: true, message: '请输入密码', trigger: 'blur'},
+            {required: true, message: '请输入密码', trigger: 'blur', ruleId: 'passwordNonEmpty'},
           ],
           password2: [
-            {required: true, message: '请确认密码', trigger: 'blur'},
-            {validator: validateRetypePasswordSame, message: '两次输入的密码不一致', trigger: ['blur']},
+            {required: true, message: '请确认密码', trigger: 'blur', ruleId: 'password2NonEmpty'},
+            {validator: validateRetypePasswordSame, message: '两次输入的密码不一致', trigger: 'blur', ruleId: 'password2SameAsPassword'},
           ],
         }
       }
